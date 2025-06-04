@@ -1,0 +1,7 @@
+push_imm 10  # stack[10]
+push_imm 20  # stack[20, 10]
++            # stack[30]
+dup
++
+sw_to_imm_addr 1
+halt

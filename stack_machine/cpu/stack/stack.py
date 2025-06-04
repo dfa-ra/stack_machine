@@ -14,8 +14,10 @@ class Stack:
         self.stack.pop(0)
 
     def pop(self):
+        top = self.stack[-1]
         self.stack.pop(-1)
         self.stack[0:0] = [0]
+        return top
 
     def over(self):
         tmp = self.stack[-1]

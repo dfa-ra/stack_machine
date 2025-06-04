@@ -11,6 +11,7 @@ def compile_mc() -> bool:
     except Exception as e:
         return False
 
+
 def compile_code(input_file: str) -> bool:
     try:
         convert_to_binary(input_file)

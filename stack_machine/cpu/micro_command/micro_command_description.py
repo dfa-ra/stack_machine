@@ -7,18 +7,19 @@ class McSignalsDescriptions:
 mc_sigs_info: dict[str, McSignalsDescriptions] = {
     "alu": McSignalsDescriptions(
         {
-            "open_a": 0, "open_b": 1, "add": 2, "sub": 3, "and": 4, "or": 5,
-            "inc": 6, "mul": 7, "div": 8, "shl": 9, "shr": 10, "not": 11,
-            "xor": 12, "if": 13, "-if": 14
-        }, [0, 14]),
+            "open_a": 0, "open_b": 1, "open_l": 2, "open_r": 3, "add": 4,
+            "sub": 5, "and": 6, "or": 7,
+            "inc": 8, "mul": 9, "div": 10, "shl": 11, "shr": 12, "not": 13,
+            "xor": 14, "if": 15, "-if": 16
+        }, [0, 16]),
     "mem": McSignalsDescriptions(
-        {"do_mem": 0, "read": 1}, [15, 16]),
+        {"write": 0, "read": 1}, [17, 18]),
     "cpu": McSignalsDescriptions(
         {
             "load_imm": 0, "push_stack": 1, "pop_stack": 2, "push_ret": 3,
-            "load_T_a": 4, "load_T_b": 5, "load_S": 6, "fetch_pc": 7,
-            "restore_pc": 8, "kill_cpu": 9, "over": 10, "call": 11,
-            "load_PC": 12
-        }, [17, 29]),
-    "micro_command": McSignalsDescriptions({"term_mc": 0}, [30])
+            "load_T_a": 4, "load_T_b": 5, "fetch_pc": 6,
+            "restore_pc": 7, "kill_cpu": 8, "over": 9, "call": 10,
+            "load_PC": 11
+        }, [19, 30]),
+    "micro_command": McSignalsDescriptions({"term_mc": 0}, [31])
 }

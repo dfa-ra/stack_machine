@@ -1,3 +1,1 @@
 from .micro_command import MicroCommand
-from .micro_command_signal_description import McSignalsDescriptions
-from .micro_command_info import mc_sigs_info

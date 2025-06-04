@@ -1,16 +1,8 @@
-from stack_machine.load_cpu import load_cpu
-
-#!!! Лучше покури над архитектурой, базовый каркас не сложно меняется, тк я всю логику захардкодил :D !!!
-
-# TODO добавь логи как хочет пенской                                                                        (пиво)
-# TODO добавь yaml конфиг (import yaml; yaml.safe_load(path))                                               (пиво)
-# вроде все
+from stack_machine.load_stack_machine import init_cpu, compile_code, compile_mc
 
 if __name__ == "__main__":
-    cpu_ = load_cpu()
+    compile_mc()
+    compile_code("test/test")
+    cpu_ = init_cpu()
     while cpu_.running:
         cpu_.tick()
-
-# легенда
-# адреса мк в коммандах, тк идеалогия стэк арх - простота
-# все остальное просто потому что захотелось, и ваще он про это не говорил

@@ -1,2 +1,8 @@
 LOG_FILE: stack.log
+INSTRUCTION_FILE: instructions.yaml
+SOURCE_MC_FILE: mc.yaml
+
+MICRO_COMMAND_MEM_PATH: ../bin_mem/mc/
+INSTRUCTION_MEM_PATH: ../bin_mem/
+DATA_MEM_PATH: ../bin_mem/
 

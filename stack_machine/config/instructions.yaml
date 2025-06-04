@@ -1,5 +1,5 @@
 commands:
-  - desc: push_imm
+  - desc: push_imm  # прямая загрузка в данных в стек (B пачкается значением imm)
     opcode: 0x01
   - desc: lw_from_im_addr
     opcode: 0x02
