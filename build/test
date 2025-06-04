@@ -1,0 +1,12 @@
+push_imm 3           #
+sw_to_imm_addr 0     # Сохраняем переменную а по адресу 0.
+push_imm 5           #
+sw_to_imm_addr 1     # Сохраняем переменную b по адресу 1
+push_imm 0           #
+sw_to_imm_addr 2     # выделяем как бы память для переменной c
+
+lw_from_im_addr 0
+lw_from_im_addr 1
++
+sw_to_imm_addr 2
+halt

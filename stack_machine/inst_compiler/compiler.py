@@ -109,5 +109,5 @@ def get_meminfo(self, start: int = 0, end: int = 0):
     return mem_info
 
 if __name__ == "__main__":
-    convert_to_binary("/media/ra/_work/ra/ITMO/CSA/lab4/test/test")
+    convert_to_binary("../../build/code")
     print(get_decompile_code())

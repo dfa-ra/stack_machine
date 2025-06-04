@@ -20,7 +20,7 @@ def compile_code(input_file: str) -> bool:
         return False
 
 
-def init_cpu() -> Cpu:
+def init_cpu(ep: int) -> Cpu:
     i_mem = InstructionMem()
     mem = DataMem(10, [80, 84], [1, 2, 3, 4, 5])
-    return Cpu(8, mem, i_mem, 0)
+    return Cpu(8, mem, i_mem, ep)

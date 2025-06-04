@@ -106,8 +106,9 @@ class CommandsInvoker:
 
 
 class ConsoleLayout:
-    def __init__(self):
-        self.cpu = init_cpu()
+    def __init__(self, ep: int):
+        self.ep = ep
+        self.cpu = init_cpu(self.ep)
 
         self.invoker = CommandsInvoker(self)
 
@@ -126,7 +127,7 @@ class ConsoleLayout:
         self.size_changed = False
 
     def reinit_cpu(self):
-        self.cpu = init_cpu()
+        self.cpu = init_cpu(self.ep)
 
     def clear_screen(self):
         os.system('cls' if os.name == 'nt' else 'clear')
