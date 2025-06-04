@@ -5,6 +5,8 @@ from stack_machine.cpu.signals import CommonSignal
 class AluUnit:
     def __init__(self, cpu):
 
+        self.right = None
+        self.left = None
         self.cpu = cpu
 
 

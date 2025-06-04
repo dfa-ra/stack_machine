@@ -45,7 +45,7 @@ commands:
       - signals:
           - unit: micro_command
             signals: [term_mc]
-  - desc: lw_from_b_addr_inc_a
+  - desc: lw_from_a_addr_inc_a
     opcode: "0x05"
     micro_commands:
       - signals:
@@ -78,7 +78,7 @@ commands:
     micro_commands:
       - signals:
           - unit: cpu
-            signals: [load_T_b, pop_stack]
+            signals: [load_T_b]
       - signals:
           - unit: micro_command
             signals: [term_mc]
@@ -102,7 +102,7 @@ commands:
           - unit: mem
             signals: [write]
           - unit: cpu
-            signals: [load_imm, pop_stack]
+            signals: [load_imm]
       - signals:
           - unit: micro_command
             signals: [term_mc]
@@ -114,8 +114,6 @@ commands:
             signals: [open_a, add]
           - unit: mem
             signals: [write]
-          - unit: cpu
-            signals: [pop_stack]
       - signals:
           - unit: micro_command
             signals: [term_mc]
@@ -127,8 +125,6 @@ commands:
             signals: [open_b, add]
           - unit: mem
             signals: [write]
-          - unit: cpu
-            signals: [pop_stack]
       - signals:
           - unit: micro_command
             signals: [term_mc]
@@ -140,8 +136,6 @@ commands:
             signals: [open_a, add]
           - unit: mem
             signals: [write]
-          - unit: cpu
-            signals: [pop_stack]
       - signals:
           - unit: alu
             signals: [open_a, inc]
@@ -173,6 +167,17 @@ commands:
       - signals:
           - unit: micro_command
             signals: [ term_mc ]
+  - desc: push_b
+    opcode: "0x16"
+    micro_commands:
+      - signals:
+          - unit: alu
+            signals: [ open_b, add ]
+          - unit: cpu
+            signals: [ push_stack ]
+      - signals:
+          - unit: micro_command
+            signals: [ term_mc ]
   - desc: "+"
     opcode: "0x20"
     micro_commands:
@@ -188,16 +193,10 @@ commands:
     opcode: "0x21"
     micro_commands:
       - signals:
-          - unit: cpu
-            signals: [load_T_a, pop_stack]
-      - signals:
-          - unit: cpu
-            signals: [load_T_b, pop_stack]
-      - signals:
           - unit: alu
-            signals: [open_a, open_b, sub]
+            signals: [ open_l, open_r, sub ]
           - unit: cpu
-            signals: [push_stack]
+            signals: [ push_stack ]
       - signals:
           - unit: micro_command
             signals: [term_mc]
@@ -205,16 +204,10 @@ commands:
     opcode: "0x22"
     micro_commands:
       - signals:
-          - unit: cpu
-            signals: [load_T_a, pop_stack]
-      - signals:
-          - unit: cpu
-            signals: [load_T_a, pop_stack]
-      - signals:
           - unit: alu
-            signals: [open_b, open_b, mul]
+            signals: [ open_l, open_r, mul ]
           - unit: cpu
-            signals: [push_stack]
+            signals: [ push_stack ]
       - signals:
           - unit: micro_command
             signals: [term_mc]
@@ -222,16 +215,10 @@ commands:
     opcode: "0x23"
     micro_commands:
       - signals:
-          - unit: cpu
-            signals: [load_T_a, pop_stack]
-      - signals:
-          - unit: cpu
-            signals: [load_T_b, pop_stack]
-      - signals:
           - unit: alu
-            signals: [open_a, open_b, div]
+            signals: [ open_l, open_r, div ]
           - unit: cpu
-            signals: [push_stack]
+            signals: [ push_stack ]
       - signals:
           - unit: micro_command
             signals: [term_mc]
@@ -239,13 +226,10 @@ commands:
     opcode: "0x24"
     micro_commands:
       - signals:
-          - unit: cpu
-            signals: [load_T_a, pop_stack]
-      - signals:
           - unit: alu
-            signals: [open_a, shl]
+            signals: [ open_l, shl ]
           - unit: cpu
-            signals: [push_stack]
+            signals: [ push_stack ]
       - signals:
           - unit: micro_command
             signals: [term_mc]
@@ -253,13 +237,10 @@ commands:
     opcode: "0x25"
     micro_commands:
       - signals:
-          - unit: cpu
-            signals: [load_T_a, pop_stack]
-      - signals:
           - unit: alu
-            signals: [open_a, shr]
+            signals: [ open_l, shr ]
           - unit: cpu
-            signals: [push_stack]
+            signals: [ push_stack ]
       - signals:
           - unit: micro_command
             signals: [term_mc]
@@ -267,13 +248,10 @@ commands:
     opcode: "0x26"
     micro_commands:
       - signals:
-          - unit: cpu
-            signals: [load_T_a, pop_stack]
-      - signals:
           - unit: alu
-            signals: [open_a, not]
+            signals: [ open_l, not ]
           - unit: cpu
-            signals: [push_stack]
+            signals: [ push_stack ]
       - signals:
           - unit: micro_command
             signals: [term_mc]
@@ -281,16 +259,43 @@ commands:
     opcode: "0x27"
     micro_commands:
       - signals:
+          - unit: alu
+            signals: [ open_l, open_r, xor ]
           - unit: cpu
-            signals: [load_T_a, pop_stack]
+            signals: [ push_stack ]
       - signals:
-          - unit: cpu
-            signals: [load_T_b, pop_stack]
+          - unit: micro_command
+            signals: [term_mc]
+  - desc: and
+    opcode: "0x28"
+    micro_commands:
       - signals:
           - unit: alu
-            signals: [open_a, open_b, xor]
+            signals: [ open_l, open_r, and ]
           - unit: cpu
-            signals: [push_stack]
+            signals: [ push_stack ]
+      - signals:
+          - unit: micro_command
+            signals: [term_mc]
+  - desc: or
+    opcode: "0x29"
+    micro_commands:
+      - signals:
+          - unit: alu
+            signals: [ open_l, open_r, or ]
+          - unit: cpu
+            signals: [ push_stack ]
+      - signals:
+          - unit: micro_command
+            signals: [term_mc]
+  - desc: inc
+    opcode: "0x2A"
+    micro_commands:
+      - signals:
+          - unit: alu
+            signals: [ open_l, inc ]
+          - unit: cpu
+            signals: [ push_stack ]
       - signals:
           - unit: micro_command
             signals: [term_mc]

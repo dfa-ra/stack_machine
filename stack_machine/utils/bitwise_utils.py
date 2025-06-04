@@ -23,16 +23,12 @@ def set_int_cut(src: int, pos: list[int], val: int) -> int:
 def cast_immediate(num: int, bit_range: list[int]) -> int:
     start, end = bit_range
     bit_length = end - start + 1
+    mask = (1 << bit_length) - 1
+    num = num & mask
 
-    # Получаем битовую длину числа (без ведущих нулей)
-    num_bits = num.bit_length() if num != 0 else 0
-
-    # Если число имеет такую же длину, как диапазон
-    if num_bits == bit_length:
-        # Обрезаем старший бит
-        mask = (1 << (bit_length - 1)) - 1
-        result = num & mask
-        # Делаем число отрицательным
-        return -result
+    sign_bit = 1 << (bit_length - 1)
+    if num & sign_bit:
+        complement = ((~num & mask) + 1) & mask
+        return -complement
     else:
         return num

@@ -22,5 +22,5 @@ def compile_code(input_file: str) -> bool:
 
 def init_cpu() -> Cpu:
     i_mem = InstructionMem()
-    mem = DataMem(32, [80, 84], [1, 2, 3, 4, 5])
+    mem = DataMem(10, [80, 84], [1, 2, 3, 4, 5])
     return Cpu(8, mem, i_mem, 0)

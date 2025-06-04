@@ -18,3 +18,4 @@ class InstructionMem:
             raise ValueError("Trying to access instruction out of bounds")
         return self.inst[addr]
 
+

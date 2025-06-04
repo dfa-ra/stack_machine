@@ -1,4 +1,4 @@
-LOG_FILE: stack.log
+LOG_FILE: ../../app.log
 INSTRUCTION_FILE: instructions.yaml
 SOURCE_MC_FILE: mc.yaml
 

@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import time
 from typing import Dict, Callable
 
 from stack_machine.cpu.mem import DataMem, InstructionMem
@@ -33,6 +34,8 @@ class Cpu:
         self.last_alu_output = 0
         self.tick_count = 0
         self.running = True
+        self.delay = 0
+        self.stop_flag = False
 
         # Определяем обработчики сигналов
         self.load_signals_handlers: Dict[str, SignalHandler] = {
@@ -54,16 +57,16 @@ class Cpu:
             "kill_cpu": SignalHandler("kill_cpu", lambda cpu, _: setattr(cpu, "running", False)),
         }
 
+
+
     def tick(self):
         pc = self.get_reg("PC")
-        if pc < 0 or pc >= len(self.i_mem.inst):
-            print(f"Error: PC ({pc}) out of bounds, memory size: {len(self.i_mem.inst)}")
+        if pc < 0 or pc >= len(self.i_mem.inst) or self.running == False:
             self.running = False
             return
 
         # Получаем immediate и микрокоманды из декодера
         imm, micro_commands = self.decoder.handle()
-        print(micro_commands)
         # Обрабатываем каждую микрокоманду как отдельный такт
         for micro_command in micro_commands:
             self.tick_count += 1
@@ -72,9 +75,7 @@ class Cpu:
             mem_s = micro_command.get('mem', [])
             cpu_s = micro_command.get('cpu', [])
 
-            max_len = max(len(lst) for lst in alu_s + mem_s + cpu_s)
-
-            if self.tick_count == 6:
+            if self.tick_count == 25:
                 a = 1
 
             if cpu_s is not []:
@@ -95,19 +96,17 @@ class Cpu:
                         handler = self.fetch_signals_handlers[signal_name]
                         handler.action(self, imm)
 
-            self._print_state()
-        self.set_reg("PC", pc + 1)
+        self.set_reg("PC", self.get_reg("PC") + 1)
 
     def _print_state(self):
-        cpu_condition = f"""tick {self.tick_count}
-A  {self.regs[0]}
-B  {self.regs[1]}
-PC {self.regs[2]}
-I  {self.regs[3]}
-MEM {self.mem.mem}
-data_stack {self.data_stack.stack}"""
-        print(cpu_condition)
-        print()
+        cpu_condition = f"""  tick {self.tick_count}
+  A  {self.regs[0]}
+  B  {self.regs[1]}
+  PC {self.regs[2]}
+  I  {self.regs[3]}
+  ALU {self.last_alu_output}
+  data_stack {self.data_stack.stack}"""
+        return cpu_condition
 
     def get_reg(self, reg: int | str) -> int:
         if isinstance(reg, str):

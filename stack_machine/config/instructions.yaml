@@ -1,61 +1,101 @@
 commands:
-  - desc: push_imm  # прямая загрузка в данных в стек (B пачкается значением imm)
+  - desc: push_imm  # прямая загрузка в данных в стек
     opcode: 0x01
-  - desc: lw_from_im_addr
+    operand: True
+  - desc: lw_from_im_addr  # загрузка в стек данных по адресу переданному команде
     opcode: 0x02
-  - desc: lw_from_a_addr
+    operand: True
+  - desc: lw_from_a_addr  # загрузка в стек данных по адресу в регистре a
     opcode: 0x03
-  - desc: lw_from_b_addr
+    operand: False
+  - desc: lw_from_b_addr  # загрузка в стек данных по адрессу в регистре b
     opcode: 0x04
-  - desc: lw_from_b_addr_inc_a
+    operand: False
+  - desc: lw_from_a_addr_inc_a  # загрузка данных по адрессу в регистри a, a = a + 1
     opcode: 0x05
-  - desc: load_T_a_pop
+    operand: False
+  - desc: load_T_a_pop  # загрузка вершины стека в а с попом стека
     opcode: 0x06
-  - desc: load_T_b_push
+    operand: False
+  - desc: load_T_b_push  # загрузка вершины стека в b с попом стека
     opcode: 0x07
-  - desc: dup
+    operand: False
+  - desc: dup  # дублирование верха стека
     opcode: 0x08
+    operand: False
 
-  - desc: sw_to_imm_addr
+  - desc: sw_to_imm_addr  # запись верха стека по адрессу переданному команде
     opcode: 0x10
-  - desc: sw_to_a_addr
+    operand: True
+  - desc: sw_to_a_addr  # запись верха стека по адрессу в регистре а
     opcode: 0x11
-  - desc: sw_to_b_addr
+    operand: False
+  - desc: sw_to_b_addr  # запись верха стека по адрессу в регистре b
     opcode: 0x12
-  - desc: sw_to_a_addr_inc_a
+    operand: False
+  - desc: sw_to_a_addr_inc_a  # запись верха стека по адресу в регистре а, а = а + 1
     opcode: 0x13
-  - desc: push_a
+    operand: False
+  - desc: push_a  # запушить значение а в стек
     opcode: 0x14
-  - desc: pop
+    operand: False
+  - desc: pop  # попнуть стек
     opcode: 0x15
+    operand: False
+  - desc: push_b  # запушить значение а в стек
+    opcode: 0x16
+    operand: False
 
-  - desc: "+"
+  - desc: "+"  # сложение 2 верхних значений стека
     opcode: 0x20
-  - desc: "-"
+    operand: False
+  - desc: "-"  # вычитание 2 верхних значений стека
     opcode: 0x21
-  - desc: "*"
+    operand: False
+  - desc: "*"  # умножение 2 верхних значений стека
     opcode: 0x22
-  - desc: "/"
+    operand: False
+  - desc: "/"  # деление 2 верхних значений стека
     opcode: 0x23
-  - desc: "<<"
+    operand: False
+  - desc: "<<"  # сдвиг в лево верха стека
     opcode: 0x24
-  - desc: ">>"
+    operand: False
+  - desc: ">>"  # сдвиг в право верха стека
     opcode: 0x25
-  - desc: not
+    operand: False
+  - desc: not  # побитовое отрицание верха стека
     opcode: 0x26
-  - desc: xor
+    operand: False
+  - desc: xor  # исключающее "или" 2 верхних значений стека
     opcode: 0x27
+    operand: False
+  - desc: and  # побитовое "и" 2 верхних значений стека
+    opcode: 0x28
+    operand: False
+  - desc: or  # побитовое "или" 2 верхних значений стека
+    opcode: 0x29
+    operand: False
+  - desc: inc  # инкрементация верхнего значения стека
+    opcode: 0x2A
+    operand: False
 
-  - desc: over
+  - desc: over  # swap 2 верхних значений стека
     opcode: 0x30
+    operand: False
 
-  - desc: jmp
+  - desc: jmp  # переход на относительное количество инструкций
     opcode: 0x40
-  - desc: call
+    operand: True
+  - desc: call  # вызов функции
     opcode: 0x41
-  - desc: ret
+    operand: True
+  - desc: ret  # возврат из функции
     opcode: 0x42
-  - desc: if
+    operand: False
+  - desc: if  # проверка являестся ли верхнее значение стека 0 и если является то переход на указанный адресс
     opcode: 0x43
-  - desc: halt
+    operand: True
+  - desc: halt  # конец программы
     opcode: 0x44
+    operand: False

@@ -10,10 +10,9 @@ class MemUnit:
         self.write_read = [1]
 
     def handle(self, signal):
-
         if "write" in signal:
             addr = self.cpu.last_alu_output
-            val = self.cpu.data_stack.get_T()
+            val = self.cpu.data_stack.pop()
             self.cpu.mem.write(addr, val)
         if "read" in signal:
             addr = self.cpu.last_alu_output

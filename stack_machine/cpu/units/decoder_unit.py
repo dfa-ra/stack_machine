@@ -19,7 +19,6 @@ class DecoderUnit:
         inst_ = Instruction(self.cpu.i_mem.get_inst(inst_addr))
 
         imm = cast_immediate(get_int_cut(inst_.bits, inst_.imm), inst_.imm)
-        print("imm: " + str(imm))
         mc_addr = get_int_cut(inst_.bits, inst_.mc_addr)
 
         micro_commands = MicroCommand.decode_microcode(mc_addr)
