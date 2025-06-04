@@ -1,0 +1,61 @@
+commands:
+  - desc: push_imm
+    opcode: 0x01
+  - desc: lw_from_im_addr
+    opcode: 0x02
+  - desc: lw_from_a_addr
+    opcode: 0x03
+  - desc: lw_from_b_addr
+    opcode: 0x04
+  - desc: lw_from_b_addr_inc_a
+    opcode: 0x05
+  - desc: load_T_a_pop
+    opcode: 0x06
+  - desc: load_T_b_push
+    opcode: 0x07
+  - desc: dup
+    opcode: 0x08
+
+  - desc: sw_to_imm_addr
+    opcode: 0x10
+  - desc: sw_to_a_addr
+    opcode: 0x11
+  - desc: sw_to_b_addr
+    opcode: 0x12
+  - desc: sw_to_a_addr_inc_a
+    opcode: 0x13
+  - desc: push_a
+    opcode: 0x14
+  - desc: pop
+    opcode: 0x15
+
+  - desc: "+"
+    opcode: 0x20
+  - desc: "-"
+    opcode: 0x21
+  - desc: "*"
+    opcode: 0x22
+  - desc: "/"
+    opcode: 0x23
+  - desc: "<<"
+    opcode: 0x24
+  - desc: ">>"
+    opcode: 0x25
+  - desc: not
+    opcode: 0x26
+  - desc: xor
+    opcode: 0x27
+
+  - desc: over
+    opcode: 0x30
+
+  - desc: jmp
+    opcode: 0x40
+  - desc: call
+    opcode: 0x41
+  - desc: ret
+    opcode: 0x42
+  - desc: if
+    opcode: 0x43
+  - desc: halt
+    opcode: 0x44
