@@ -10,7 +10,7 @@ commands:
       - signals:
           - unit: micro_command
             signals: [term_mc]
-  - desc: lw_from_im_addr
+  - desc: lw_from_imm_addr
     opcode: "0x02"
     micro_commands:
       - signals:
@@ -255,17 +255,6 @@ commands:
       - signals:
           - unit: micro_command
             signals: [term_mc]
-  - desc: xor
-    opcode: "0x27"
-    micro_commands:
-      - signals:
-          - unit: alu
-            signals: [ open_l, open_r, xor ]
-          - unit: cpu
-            signals: [ push_stack ]
-      - signals:
-          - unit: micro_command
-            signals: [term_mc]
   - desc: and
     opcode: "0x28"
     micro_commands:
@@ -313,9 +302,9 @@ commands:
     micro_commands:
       - signals:
           - unit: alu
-            signals: [open_a, open_b, add]
+            signals: [open_r_pc, open_b, add]
           - unit: cpu
-            signals: [load_PC, load_imm, fetch_pc]
+            signals: [load_imm, fetch_pc]
       - signals:
           - unit: micro_command
             signals: [term_mc]
@@ -324,9 +313,9 @@ commands:
     micro_commands:
       - signals:
           - unit: alu
-            signals: [open_a, open_b, add]
+            signals: [open_r_pc, open_b, add]
           - unit: cpu
-            signals: [load_PC, load_imm, call]
+            signals: [load_imm, call]
       - signals:
           - unit: micro_command
             signals: [term_mc]
@@ -344,9 +333,9 @@ commands:
     micro_commands:
       - signals:
           - unit: alu
-            signals: [open_a, open_b, add, if]
+            signals: [open_r_pc, open_b, add, if]
           - unit: cpu
-            signals: [load_PC, load_imm, fetch_pc]
+            signals: [load_imm, fetch_pc]
       - signals:
           - unit: micro_command
             signals: [term_mc]

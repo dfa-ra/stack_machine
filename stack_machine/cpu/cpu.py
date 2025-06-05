@@ -117,3 +117,4 @@ class Cpu:
         if isinstance(reg, str):
             reg = self.reg_names[reg]
         self.regs[reg] = val
+

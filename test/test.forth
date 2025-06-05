@@ -5,7 +5,7 @@ _data_
 
 _func_
 : TEST_FUNC
-
+    +
 ;
 
 _text_

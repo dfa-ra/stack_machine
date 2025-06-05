@@ -24,3 +24,10 @@ def init_cpu(ep: int) -> Cpu:
     i_mem = InstructionMem()
     mem = DataMem(10, [80, 84], [1, 2, 3, 4, 5])
     return Cpu(8, mem, i_mem, ep)
+
+
+if __name__ == '__main__':
+    _cpu = init_cpu(0)
+
+    while _cpu.running:
+        _cpu.tick()

@@ -26,6 +26,8 @@ class AluUnit:
             self.left = self.cpu.get_reg("A")
         if "open_b" in signal:
             self.right = self.cpu.get_reg("B")
+        if "open_r_pc" in signal:
+            self.left = self.cpu.get_reg("PC")
         if "open_l" in signal:
             self.left = self.cpu.data_stack.pop()
         if "open_r" in signal:

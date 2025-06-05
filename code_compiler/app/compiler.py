@@ -105,7 +105,7 @@ class Compiler:
                     offset = def_pos - call_pos - 1
                     self.text_output.append(f"call {offset}")
                 elif token.value in self.user_variable:
-                    self.text_output.append(f"lw_from_im_addr {self.user_variable[token.value][0]}")
+                    self.text_output.append(f"lw_from_imm_addr {self.user_variable[token.value][0]}")
                 else:
                     raise ValueError(f"Unknown word: {token.value}")
             elif token.type == Tokens.COLON:
@@ -137,7 +137,7 @@ class Compiler:
                     else:
                         output.extend(self.built_in_words[token.value])
                 elif token.value in self.user_variable:
-                    output.append(f"lw_from_im_addr {self.user_variable[token.value][0]}")
+                    output.append(f"lw_from_imm_addr {self.user_variable[token.value][0]}")
                 else:
                     raise ValueError(f"Unknown word: {token.value}")
             self.next_token()

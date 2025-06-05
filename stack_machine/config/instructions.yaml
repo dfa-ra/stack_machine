@@ -2,7 +2,7 @@ commands:
   - desc: push_imm  # прямая загрузка в данных в стек
     opcode: 0x01
     operand: True
-  - desc: lw_from_im_addr  # загрузка в стек данных по адресу переданному команде
+  - desc: lw_from_imm_addr  # загрузка в стек данных по адресу переданному команде
     opcode: 0x02
     operand: True
   - desc: lw_from_a_addr  # загрузка в стек данных по адресу в регистре a
@@ -66,9 +66,6 @@ commands:
     operand: False
   - desc: not  # побитовое отрицание верха стека
     opcode: 0x26
-    operand: False
-  - desc: xor  # исключающее "или" 2 верхних значений стека
-    opcode: 0x27
     operand: False
   - desc: and  # побитовое "и" 2 верхних значений стека
     opcode: 0x28
