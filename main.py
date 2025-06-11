@@ -12,7 +12,3 @@ if __name__ == "__main__":
 
     console = ConsoleLayout(start_code)
     console.run()
-
-
-    # while cpu_.running:
-    #     cpu_.tick()

@@ -1,7 +1,7 @@
 
 _data_
 [ 1 2 3 ] 3 ARRAY mas
-0 VAR index
+1 VAR index
 
 _func_
 : TEST_FUNC
@@ -9,6 +9,7 @@ _func_
 ;
 
 _text_
+index 1 + !index
 8 index !mas
 HALT
 

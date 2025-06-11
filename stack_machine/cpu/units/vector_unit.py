@@ -1,7 +1,12 @@
-class VectorUnit:
-    def __init__(self, cpu):
-        self.cpu = cpu
+from typing import List
 
-    def slice(self):
-        vec = self.cpu.vector_stack.pop()
+
+class VectorUnit:
+
+    @staticmethod
+    def slice(vec: List):
         return vec[0], vec[1], vec[2], vec[3]
+
+    @staticmethod
+    def compound(a, b, c, d):
+        return [a, b, c, d]

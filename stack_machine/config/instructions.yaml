@@ -1,4 +1,7 @@
 commands:
+
+  # Scalar instruction
+
   - desc: push_imm  # прямая загрузка в данных в стек
     opcode: 0x01
     operand: True
@@ -95,4 +98,57 @@ commands:
     operand: True
   - desc: halt  # конец программы
     opcode: 0x44
+    operand: False
+
+  # SIMD instruction
+
+  - desc: v_lw_from_imm_addr  # загрузка в стек векторов по адресу переданному команде
+    opcode: 0x80
+    operand: True
+  - desc: v_lw_from_a_addr  # загрузка в стек векторов по адресу в регистре a
+    opcode: 0x81
+    operand: False
+  - desc: v_lw_from_b_addr  # загрузка в стек векторов по адрессу в регистре b
+    opcode: 0x82
+    operand: False
+
+  - desc: v_sw_to_imm_addr  # запись верха стека векторов по адрессу переданному команде
+    opcode: 0x90
+    operand: True
+  - desc: v_sw_to_a_addr  # запись верха стека векторов по адрессу в регистре а
+    opcode: 0x91
+    operand: False
+  - desc: v_sw_to_b_addr  # запись верха стека векторов по адрессу в регистре b
+    opcode: 0x92
+    operand: False
+
+  - desc: "v+"  # сложение 2 верхних значений стека векторов
+    opcode: 0xA0
+    operand: False
+  - desc: "v-"  # вычитание 2 верхних значений стека векторов
+    opcode: 0xA1
+    operand: False
+  - desc: "v*"  # умножение 2 верхних значений стека векторов
+    opcode: 0xA2
+    operand: False
+  - desc: "v/"  # деление 2 верхних значений стека векторов
+    opcode: 0xA3
+    operand: False
+  - desc: "v<<"  # сдвиг в лево верха стека векторов
+    opcode: 0xA4
+    operand: False
+  - desc: "v>>"  # сдвиг в право верха стека векторов
+    opcode: 0xA5
+    operand: False
+  - desc: v_not  # побитовое отрицание верха стека векторов
+    opcode: 0xA6
+    operand: False
+  - desc: v_and  # побитовое "и" 2 верхних значений стека векторов
+    opcode: 0xA8
+    operand: False
+  - desc: v_or  # побитовое "или" 2 верхних значений стека векторов
+    opcode: 0xA9
+    operand: False
+  - desc: v_inc  # инкрементация верхнего значения стека векторов
+    opcode: 0xAA
     operand: False

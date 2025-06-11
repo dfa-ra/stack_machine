@@ -9,7 +9,7 @@ class Stack:
     def get_S(self):
         return self.stack[-2]
 
-    def push(self, val: int):
+    def push(self, val):
         self.stack.append(val)
         self.stack.pop(0)
 

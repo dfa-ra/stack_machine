@@ -1,4 +1,5 @@
 import os
+import textwrap
 import time
 
 from stack_machine.inst_compiler.compiler import get_decompile_code, get_meminfo
@@ -12,22 +13,27 @@ def gen_name(name: str, length: int):
 
 
 def render_block(text, x_start, y_start, width, height):
-    # Рисуем блок с заданными координатами и размерами
-    lines = text.split('\n')
+    # Разбиваем текст на строки и переносим длинные строки
+    lines = []
+    for line in text.split('\n'):
+        # Используем textwrap.wrap для переноса строк
+        wrapped_lines = textwrap.wrap(line, width=width, replace_whitespace=False, drop_whitespace=False)
+        lines.extend(wrapped_lines if wrapped_lines else [''])  # Добавляем пустую строку, если строка пустая
+
+    # Ограничиваем количество строк по высоте блока
     for i, line in enumerate(lines):
         if i >= height:
             break
+        # Убедимся, что строка не превышает ширину блока
         padded_line = line.ljust(width)[:width]
         print(f"\033[{y_start + i + 1};{x_start + 1}H{padded_line}", end='')
 
 
 def get_instruction():
     msg = ("  tick(t) - выполнять программу по тикам\n"
-           "  dump_chunk(dc) - сделать дапм чанка в определённом\n"
-           "               диапазоне\n"
-           "  delay - установить задержку при работе\n"
-           "          процессора\n"
-           "  reinit_cpu(rc) - заново проинициализировть cpu"
+           "  dump_chunk(dc) - сделать дапм чанка в определённом диапазоне\n"
+           "  delay - установить задержку при работе процессора\n"
+           "  reinit_cpu(rc) - заново проинициализировть cpu\n"
            "  go - запустить работу\n"
            "  stop - остановить работу\n"
            "  inst_mnem(im) - Показать мнемоники инструкций\n"
@@ -98,7 +104,6 @@ class CommandsInvoker:
         }
         self.console_layout = console_layout
 
-
     def execute(self, command, args):
         if command in self.commands.keys():
             self.commands[command](args)
@@ -165,7 +170,7 @@ class ConsoleLayout:
         block4_text = gen_name(self.module4_name, block1_width) + self.module4_data
         render_block(block4_text, 0, 0, block4_width, block4_height)
 
-        # Блок 4: слева
+        # Блок 5: слева снизу
         block5_width = self.width // 3
         block5_height = self.height // 2
         block5_text = gen_name(self.module5_name, block1_width) + self.module5_data

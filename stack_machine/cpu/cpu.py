@@ -1,16 +1,47 @@
 from dataclasses import dataclass
-import time
 from typing import Dict, Callable
 
 from stack_machine.cpu.mem import DataMem, InstructionMem
 from stack_machine.cpu.stack import Stack
-from stack_machine.cpu.units import DecoderUnit, MemUnit, AluUnit
+from stack_machine.cpu.units import ControlUnit, MemUnit, ControlAluUnit
+from stack_machine.utils.log import logger
 
 
 @dataclass
 class SignalHandler:
     name: str
     action: Callable[['Cpu', int], None]
+
+
+def push_stack(cpu):
+    if cpu.simd_type == 1:
+        cpu.vector_stack.push(cpu.last_alu_output)
+    else:
+        cpu.data_stack.push(cpu.last_alu_output)
+
+
+def pop_stack(cpu):
+    if cpu.simd_type == 1:
+        cpu.vector_stack.pop()
+    else:
+        cpu.data_stack.pop()
+
+
+def over_stack(cpu):
+    if cpu.simd_type == 1:
+        cpu.vector_stack.over()
+    else:
+        cpu.data_stack.over()
+
+
+def call(cpu):
+    cpu.ret_stack.push(cpu.get_reg("PC"))
+    cpu.set_reg("PC", cpu.last_alu_output)
+
+
+def restore_pc(cpu):
+    cpu.set_reg("PC", cpu.ret_stack.get_T()),
+    cpu.ret_stack.pop()
 
 
 class Cpu:
@@ -23,18 +54,20 @@ class Cpu:
     ):
         self.data_stack: Stack = Stack(stack_size)
         self.ret_stack: Stack = Stack(stack_size)
+        self.vector_stack: Stack = Stack(stack_size)
         self.mem: DataMem = mem
         self.i_mem: InstructionMem = i_mem
         self.regs = [0 for _ in range(4)]
         self.reg_names = {"A": 0, "B": 1, "PC": 2, "I": 3}
         self.set_reg("PC", ep)
-        self.alu: AluUnit = AluUnit(self)
+        self.control_alu: ControlAluUnit = ControlAluUnit(self)
         self.mem_unit: MemUnit = MemUnit(self)
-        self.decoder: DecoderUnit = DecoderUnit(self)
+        self.control_unit: ControlUnit = ControlUnit(self)
         self.last_alu_output = 0
         self.tick_count = 0
         self.running = True
         self.delay = 0
+        self.simd_type = 0
         self.stop_flag = False
 
         # Определяем обработчики сигналов
@@ -47,50 +80,55 @@ class Cpu:
 
         self.fetch_signals_handlers: Dict[str, SignalHandler] = {
             "fetch_pc": SignalHandler("fetch_pc", lambda cpu, _: cpu.set_reg("PC", cpu.last_alu_output)),
-            "push_stack": SignalHandler("push_stack", lambda cpu, _: cpu.data_stack.push(cpu.last_alu_output)),
-            "pop_stack": SignalHandler("pop_stack", lambda cpu, _: cpu.data_stack.pop()),
-            "call": SignalHandler("call", lambda cpu, _: [cpu.ret_stack.push(cpu.get_reg("PC")),
-                                                          cpu.set_reg("PC", cpu.last_alu_output)]),
+            "push_stack": SignalHandler("push_stack", lambda cpu, _: push_stack(cpu)),
+            "pop_stack": SignalHandler("pop_stack", lambda cpu, _: pop_stack(cpu)),
+            "call": SignalHandler("call", lambda cpu, _: call(cpu)),
             "restore_pc": SignalHandler("restore_pc",
-                                        lambda cpu, _: [cpu.set_reg("PC", cpu.ret_stack.get_T()), cpu.ret_stack.pop()]),
-            "over": SignalHandler("over", lambda cpu, _: cpu.data_stack.over()),
+                                        lambda cpu, _: restore_pc(cpu)),
+            "over": SignalHandler("over", lambda cpu, _: over_stack(cpu)),
             "kill_cpu": SignalHandler("kill_cpu", lambda cpu, _: setattr(cpu, "running", False)),
         }
-
-
 
     def tick(self):
         pc = self.get_reg("PC")
         if pc < 0 or pc >= len(self.i_mem.inst) or self.running == False:
             self.running = False
             return
-
+        logger.info(f"Program counter: {pc}")
         # Получаем immediate и микрокоманды из декодера
-        imm, micro_commands = self.decoder.handle()
+        imm, micro_commands = self.control_unit.handle()
         # Обрабатываем каждую микрокоманду как отдельный такт
+
         for micro_command in micro_commands:
             self.tick_count += 1
-            print(f"Tick {self.tick_count}: Processing microcode {micro_command}")
+            logger.info(f"Tick {self.tick_count}: {micro_command}")
+
+            type_s = micro_command.get('type', [])
             alu_s = micro_command.get('alu', [])
             mem_s = micro_command.get('mem', [])
             cpu_s = micro_command.get('cpu', [])
 
-            if self.tick_count == 25:
+            if self.tick_count == 7:
                 a = 1
 
-            if cpu_s is not []:
+            self.simd_type = 0
+            if type_s is not []:
+                if "simd" in type_s:
+                    self.simd_type = 1
+
+            if cpu_s is not [] and len(cpu_s) > 0:
                 for signal_name in cpu_s:
                     if signal_name in self.load_signals_handlers.keys():
                         handler = self.load_signals_handlers[signal_name]
                         handler.action(self, imm)
 
-            if alu_s is not []:
-                self.last_alu_output = self.alu.handle(alu_s)
+            if alu_s is not [] and len(alu_s) > 0:
+                self.last_alu_output = self.control_alu.handle(alu_s)
 
-            if mem_s is not []:
+            if mem_s is not [] and len(mem_s) > 0:
                 self.mem_unit.handle(mem_s)
 
-            if cpu_s is not []:
+            if cpu_s is not [] and len(cpu_s) > 0:
                 for signal_name in cpu_s:
                     if signal_name in self.fetch_signals_handlers.keys():
                         handler = self.fetch_signals_handlers[signal_name]
@@ -105,7 +143,8 @@ class Cpu:
   PC {self.regs[2]}
   I  {self.regs[3]}
   ALU {self.last_alu_output}
-  data_stack {self.data_stack.stack}"""
+  data_stack {self.data_stack.stack}
+  vector_stack {self.vector_stack.stack}"""
         return cpu_condition
 
     def get_reg(self, reg: int | str) -> int:
@@ -117,4 +156,3 @@ class Cpu:
         if isinstance(reg, str):
             reg = self.reg_names[reg]
         self.regs[reg] = val
-

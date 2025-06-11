@@ -8,7 +8,7 @@ from stack_machine.utils.bitwise_utils import cast_immediate, get_int_cut
 
 
 # смотри на аддрес мк (в самой инструкции) и набивает список сигналов
-class DecoderUnit:
+class ControlUnit:
 
     def __init__(self, cpu):
         self.cpu = cpu
