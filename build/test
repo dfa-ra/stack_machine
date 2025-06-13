@@ -1,12 +1,28 @@
-push_imm 3           #
-sw_to_imm_addr 0     # Сохраняем переменную а по адресу 0.
-push_imm 5           #
-sw_to_imm_addr 1     # Сохраняем переменную b по адресу 1
-push_imm 0           #
-sw_to_imm_addr 2     # выделяем как бы память для переменной c
+    .data
 
-lw_from_im_addr 0
-lw_from_im_addr 1
+var 0 word -1
+var 4 word 2
+var 8 byte 0 0 1 1
+var 12 word 4
+
+    .text
+
 +
-sw_to_imm_addr 2
+ret
+-
++
+-
+ret
+
+    _start
+
+v_lw_from_imm_addr 0
+v_lw_from_imm_addr 0
+v+
+v_sw_to_imm_addr 0
+lw_from_imm_addr 0
+lw_from_imm_addr 1
+call -13
+sw_to_imm_addr 0
 halt
+

@@ -1,17 +1,11 @@
 import os
 
 from stack_machine.config.config import data_mem_path
-
-
-def initialize_memory_file(file_path: str, size_bytes: int):
-    os.makedirs(os.path.dirname(file_path), exist_ok=True)
-    with open(file_path, 'wb') as f:
-        f.write(b'\x00' * (size_bytes * 4))
+from stack_machine.utils.bitwise_utils import btle, ltbe, tsfb
 
 
 class DataMem:
-    def __init__(self, size: int, io_addr: list[int], io_data: list[int]):
-        initialize_memory_file(data_mem_path, size)
+    def __init__(self, io_addr: list[int], io_data: list[int]):
         self.data_mem_path = data_mem_path
         # Читаем бинарный файл
         with open(data_mem_path, 'rb') as f:
@@ -60,29 +54,27 @@ class DataMem:
             f.write(self.mem)
 
     def write(self, address: int, value: int) -> None:
-        address *= 4
+        value = ltbe(value)
         if address <= self.size - 4:
             if address == self.output:
                 self.output_stream.append(value)
-            for i in range(3, -1, -1):
-                self.mem[address + i] = (value & 0xFF)
-                value >>= 8
+            # Записываем 32-битное слово в big-endian
+            for i in range(4):
+                self.mem[address + i] = (value >> (24 - i * 8)) & 0xFF
             self._sync_to_file()
         else:
             raise ValueError("Attempting to write memory out of address space")
 
     def read(self, address: int) -> int:
-        address *= 4
         if address <= self.size - 4:
             if address == self.input:
                 ret = self.input_stream[0]
                 self.input_stream.pop(0)
-                return ret
-            # Читаем 32-битное слово в little-endian
+                return tsfb(btle(ret))
+            # Читаем 32-битное слово в big-endian
             ret = 0
             for i in range(4):
-                ret <<= 8
-                ret |= self.mem[address + i]
-            return ret
+                ret |= self.mem[address + i] << (24 - i * 8)
+            return tsfb(btle(ret))
         else:
             raise ValueError("Attempting to read memory out of address space")

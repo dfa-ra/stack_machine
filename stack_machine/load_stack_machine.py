@@ -16,12 +16,12 @@ def compile_mc() -> bool:
         return False
 
 
-def compile_code(input_file: str) -> bool:
+def compile_code(input_file: str) -> int | None | bool:
     logger.info("Start code сopilation.")
     try:
-        convert_to_binary(input_file)
+        start_code = convert_to_binary(input_file, 32)
         logger.info("Successfully compiled code to binary.")
-        return True
+        return start_code
     except Exception as e:
         logger.error("Compiled code to binary failed.")
         return False
@@ -30,12 +30,15 @@ def compile_code(input_file: str) -> bool:
 def init_cpu(ep: int) -> Cpu:
     logger.info("Init cpu.")
     i_mem = InstructionMem()
-    mem = DataMem(10, [80, 84], [1, 2, 3, 4, 5])
+    mem = DataMem([80, 84], [1, 2, 3, 4, 5])
     return Cpu(8, mem, i_mem, ep)
 
 
 if __name__ == '__main__':
-    _cpu = init_cpu(0)
+
+    compile_micro_command()
+    start = compile_code("../build/code")
+    _cpu = init_cpu(start)
 
     while _cpu.running:
         _cpu.tick()

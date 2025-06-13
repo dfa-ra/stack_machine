@@ -2,7 +2,7 @@ import os
 import textwrap
 import time
 
-from stack_machine.inst_compiler.compiler import get_decompile_code, get_meminfo
+from stack_machine.inst_compiler.compiler import get_decompiled_code, get_data_meminfo
 from stack_machine.load_stack_machine import init_cpu
 
 
@@ -49,7 +49,7 @@ class CommandsInvoker:
             "t": lambda args: [
                 console_layout.update_module_data(
                     3,
-                    get_decompile_code(self.console_layout.cpu.get_reg("PC"))
+                    get_decompiled_code(self.console_layout.cpu.get_reg("PC"))
                 ),
                 self.console_layout.cpu.tick(),
                 console_layout.update_module_data(5, self.console_layout.cpu._print_state()),
@@ -68,7 +68,7 @@ class CommandsInvoker:
                 console_layout.reinit_cpu(),
                 console_layout.update_module_data(
                     3,
-                    get_decompile_code(self.console_layout.cpu.get_reg("PC"))
+                    get_decompiled_code(self.console_layout.cpu.get_reg("PC"))
                 ),
                 console_layout.update_module_data(5, self.console_layout.cpu._print_state()),
                 console_layout.update_module_data(
@@ -80,7 +80,7 @@ class CommandsInvoker:
                 console_layout.cpu_run(),
                 console_layout.update_module_data(
                     3,
-                    get_decompile_code(self.console_layout.cpu.get_reg("PC"))
+                    get_decompiled_code(self.console_layout.cpu.get_reg("PC"))
                 ),
                 console_layout.update_module_data(5, self.console_layout.cpu._print_state()),
                 console_layout.update_module_data(
@@ -92,13 +92,13 @@ class CommandsInvoker:
             "im": lambda args: [
                 console_layout.update_module_data(
                     3,
-                    get_decompile_code(self.console_layout.cpu.get_reg("PC"))
+                    get_decompiled_code(self.console_layout.cpu.get_reg("PC"))
                 )
             ],
             "ib": lambda args: [
                 console_layout.update_module_data(
                     3,
-                    get_meminfo(self.left_chunk_border, self.right_chunk_border)
+                    get_data_meminfo(self.left_chunk_border, self.right_chunk_border)
                 )
             ]
         }

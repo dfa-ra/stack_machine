@@ -183,7 +183,7 @@ commands:
     micro_commands:
       - signals:
           - unit: alu
-            signals: [open_l, open_r, add ]
+            signals: [ open_l, open_r, add ]
           - unit: cpu
             signals: [ push_stack ]
       - signals:
