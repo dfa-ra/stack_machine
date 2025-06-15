@@ -1,0 +1,59 @@
+   .data
+var 0 word 5
+var 8 word 0
+var 12 word 0
+   .text
+   _start
+push_imm 1
+sw_to_imm_addr 8
+push_imm 4
+push_imm 1
+over
+dup
+lw_from_imm_addr 8
+-
+not
+inc
+-if 1
+jmp 38
+over
+lw_from_imm_addr 0
+push_imm 10
++
+sw_to_imm_addr 0
+push_imm 1
+sw_to_imm_addr 12
+push_imm 4
+push_imm 1
+over
+dup
+lw_from_imm_addr 12
+-
+not
+inc
+-if 1
+jmp 10
+over
+lw_from_imm_addr 0
+lw_from_imm_addr 12
++
+sw_to_imm_addr 0
+dup
+lw_from_imm_addr 12
++
+sw_to_imm_addr 12
+jmp -18
+pop
+pop
+lw_from_imm_addr 0
+push_imm 1
++
+sw_to_imm_addr 0
+dup
+lw_from_imm_addr 8
++
+sw_to_imm_addr 8
+jmp -46
+pop
+pop
+halt

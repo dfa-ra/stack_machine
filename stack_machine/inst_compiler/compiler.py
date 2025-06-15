@@ -36,7 +36,7 @@ def convert_to_binary(input_file: str, memory_size: int) -> int | None:
             if not line or line.startswith('\\'):
                 continue
 
-            parts = line.split()
+            parts = line.split(';')[0].split()
             if not parts:
                 continue
 

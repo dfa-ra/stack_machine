@@ -14,7 +14,7 @@ class CompilerFunc:
             self.output_func.append(f"{command} {operand}" if commands[command] else command)
             self.compiler.pc += 1
 
-    def compile(self, lines):
+    def compile(self, lines, address_space):
         func = []
         for line in lines:
             if line.startswith(':'):
@@ -24,7 +24,7 @@ class CompilerFunc:
 
             line = line.strip()
             if line == ';':
-                self.compiler_text.compile(func)
+                self.compiler_text.compile(func, address_space)
                 self.output_func += self.compiler_text.output_text
                 self.emit_func('ret')
                 self.compiler_text.output_text = []

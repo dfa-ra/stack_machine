@@ -42,11 +42,14 @@ commands:
   - desc: push_a  # запушить значение а в стек
     opcode: 0x14
     operand: False
-  - desc: pop  # попнуть стек
+  - desc: push_a_inc  # запушить значение а в стек
     opcode: 0x15
     operand: False
-  - desc: push_b  # запушить значение а в стек
+  - desc: pop  # попнуть стек
     opcode: 0x16
+    operand: False
+  - desc: push_b  # запушить значение а в стек
+    opcode: 0x17
     operand: False
 
   - desc: "+"  # сложение 2 верхних значений стека
@@ -96,8 +99,11 @@ commands:
   - desc: if  # проверка являестся ли верхнее значение стека 0 и если является то переход на указанный адресс
     opcode: 0x43
     operand: True
-  - desc: halt  # конец программы
+  - desc: -if  # проверка являестся ли верхнее значение стека 0 и если является то переход на указанный адресс
     opcode: 0x44
+    operand: True
+  - desc: halt  # конец программы
+    opcode: 0x45
     operand: False
 
   # SIMD instruction

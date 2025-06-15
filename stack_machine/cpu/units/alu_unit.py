@@ -28,9 +28,13 @@ class ALU:
             if "if" in signal:
                 if self.cpu.data_stack.get_T() != 0:
                     self.alu_output = self.left
-            elif "-fi" in signal:
+                else:
+                    self.alu_output = self.left + self.right
+            elif "-if" in signal:
                 if self.cpu.data_stack.get_T() < 0:
                     self.alu_output = self.left
+                else:
+                    self.alu_output = self.left + self.right
             else:
                 self.alu_output = self.left + self.right
         elif "sub" in signal:

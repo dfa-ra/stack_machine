@@ -16,7 +16,7 @@ def main(code: str):
 
 if __name__ == '__main__':
 
-    path = "../test/test.forth"
+    path = "../code/program.forth"
     wd = os.path.dirname(os.path.abspath(__file__))
 
     with open(os.path.join(wd, path)) as code_file:
